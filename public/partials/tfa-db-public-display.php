@@ -21,7 +21,7 @@
 <div class="building-info-box">
 	<div class="content-column one_half">
 	<iframe src="https://www.google.com/maps/embed?pb=<?php echo $building_data[0]["gmaps_embed"];?>" width="300" height="300" frameborder="0" style="border:0" allowfullscreen=""></iframe>
-		<?php echo '<br class=""/><figcaption><a href="' . $building_data[0][ "gmaps_link" ] . '" target="_blank">Google Maps Link</a></figcaption>' ?>
+		<?php echo '<br class=""/><a href="' . $building_data[0][ "gmaps_link" ] . '" target="_blank" style="font-size:x-small">Google Maps Link</a>' ?>
 	</div>
 	<div class="content-column one_half last_column" style="padding-left:10px;">
 		<p>
