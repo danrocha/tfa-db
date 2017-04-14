@@ -1,0 +1,12 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+#buildings-data {
+	border-collapse: collapse;
+	border: 1px solid #000;
+	vertical-align: top;
+	padding: 1em;
+	
+}

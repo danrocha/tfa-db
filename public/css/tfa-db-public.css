@@ -1,0 +1,11 @@
+/**
+ * All of the CSS for your public-facing functionality should be
+ * included in this file.
+ */
+
+.building-info-box {
+	border: .5px solid #666;
+	width: 100%;
+	padding: 1em;
+    display: inline-block;
+}
