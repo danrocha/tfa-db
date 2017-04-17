@@ -16,7 +16,7 @@
  * Plugin Name:       TFA DB
  * Plugin URI:        http://theforeignarchitect.com/
  * Description:       Management for the buildings database for TFA, with shortcodes.
- * Version:           1.0.1
+ * Version:           2.0.0
  * Author:            Daniel da Rocha
  * Author URI:        http://theforeignarchitect.com/
  * License:           GPL-2.0+
