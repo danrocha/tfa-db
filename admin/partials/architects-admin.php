@@ -65,7 +65,7 @@ $website = "";
       <label for="architect_website">Website</label>
     </td>
     <td>
-      <input id="architect_website" name="architect_website" type="text" value="<?php echo $website; ?>" size="50">
+      <input id="architect_website" name="architect_website" placeholder="http://" type="text" value="<?php echo $website; ?>" size="50">
     </td>
   </tr>
 </table>
