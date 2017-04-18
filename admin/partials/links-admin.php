@@ -77,8 +77,8 @@ if ( !isset( $_POST[ 'action' ] ) ) {
 	echo '<input type="hidden" name="add" value=1>';
 	echo '<button name="action" value="add">add</button>';
 	echo '</td>';
-	echo '<td><input type="text" name="link_title" pattern="[a-zA-Z0-9 ]+" value="" size="20" /></td>';
-	echo '<td><input type="text" name="link_url" pattern="[a-zA-Z0-9 ]+" value="" size="40" /></td>';
+	echo '<td><input type="text" name="link_title" value="" placeholder="Link Name" size="20" /></td>';
+	echo '<td><input type="text" name="link_url" value="" placeholder="http://" size="50" /></td>';
 	echo '</tr></form>';
 	echo "</table>";
 	echo "</div>";
