@@ -63,16 +63,9 @@ if ( isset( $_POST['action'] ) ) {
 
 		//display dropdown with architect names
 		echo "<p>Select architect to associate with this building:</p>";
-		$all_architects = $this->list_architects();
 		echo '<form action=""' . esc_url( $_SERVER['REQUEST_URI'] ) . '" method="post">';
-		echo "<select name='architect_id'>";
-    foreach ($all_architects as $architect) {
-      unset($id, $name);
-      $id = $architect['id'];
-    	$name = $architect['name'];
-			echo '<option value="' . $id . '" >' . $name . '</option>';
-		}
-    echo "</select>";
+		$selector = $this->display_architect_selector ();
+		echo $selector;
 		echo '<input type="hidden" name="building_id" value="'. $_POST['building_id'] . '">';
 		echo '<input type="hidden" name="add_architect" value=1>';
 		echo '<input type="hidden" name="building_name" value="'. $_POST[ "building_name" ] . '">';
@@ -99,6 +92,14 @@ if ( isset( $_POST['action'] ) ) {
 				<label class="col-md-4 control-label" for="name">Name</label>:
 			</td><td>
 				<input id="name" name="name" type="text" placeholder="" size="50">
+			</td></tr>
+			<tr><td>
+			  <label for="architect">Architect</label>:
+			</td><td>
+				<?php
+					$selector = $this->display_architect_selector ();
+					echo $selector;
+				 ?>
 			</td></tr>
 			<tr><td>
 			  <label for="website">Website</label>:
@@ -254,16 +255,20 @@ foreach ( $buildings as $building ){
 	echo '<button name="action" value="edit_architects">edit</button> ';
 	//list architects
 	$rows = $this->get_building_architects( $building[ "id" ] );
-	$architects = "";
-	$num_architects = count( $rows );
-	foreach ( $rows as $row ) {
-		$architects .= $row[ "architect_name" ];
-		if ( $num_architects > 1 ){
-			$architects .= ", ";
+	if ( $rows ) {
+		$architects = "";
+		$num_architects = count( $rows );
+		foreach ( $rows as $row ) {
+			$architects .= $row[ "architect_name" ];
+			if ( $num_architects > 1 ){
+				$architects .= ", ";
+			}
+			$num_architects -= 1;
 		}
-		$num_architects -= 1;
+		echo $architects;
+	} else {
+		echo "(no architects)";
 	}
-	echo $architects;
 
 	echo '</form></td>';
 	//location

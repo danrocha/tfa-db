@@ -155,7 +155,7 @@ class TFA_DB_Admin {
 		require_once plugin_dir_path( __FILE__ ) . 'partials/links-admin.php';
 	}
 
-	/**
+	/**********************************************
 	* COUNT items
 	*
 	**/
@@ -175,7 +175,7 @@ class TFA_DB_Admin {
 		return $count;
 	}
 
-	/**
+	/***********************************************
 	*
 	* ADD
 	* functions to add data
@@ -205,6 +205,7 @@ class TFA_DB_Admin {
 
 		//sort data
 		$name = $data[ "name" ];
+		$architect_id = $data[ "architect_id" ];
 		$website = $data[ "website" ];
 		$function = $data[ "function" ];
 		$year = $data[ "year" ];
@@ -242,6 +243,8 @@ class TFA_DB_Admin {
   			die('Could not enter data: ' . mysql_error());
 		}
 		$inserted_id = $this->db->lastInsertId();
+		//add architect
+		$this->add_architect_building ( $inserted_id, $architect_id );
 		return "Entered data successfully: ($inserted_id) - $name";
 	}
 
@@ -285,6 +288,21 @@ class TFA_DB_Admin {
 		}
 
 	}
+
+	//create dropdown menu with architect lists for architect selection
+	public function display_architect_selector () {
+		$all_architects = $this->list_architects();
+		$selector = "<select name='architect_id'>";
+    foreach ($all_architects as $architect) {
+      unset($id, $name);
+      $id = $architect['id'];
+    	$name = $architect['name'];
+			$selector .= '<option value="' . $id . '" >' . $name . '</option>';
+		}
+    $selector .=  "</select>";
+		return $selector;
+	}
+
 
 	//get single architect data
 	public function get_architect( $id ) {
@@ -413,6 +431,25 @@ class TFA_DB_Admin {
 		}
 	}
 
+	public function get_building_links( $building_id ) {
+
+		$stmt = $this->db->prepare( "SELECT links.id AS id,
+											links.link_url AS url,
+											links.link_title AS title
+									FROM 	tfa_building_links AS links
+									WHERE	links.building_id = :building_id
+									ORDER BY title"
+							);
+
+
+		//print_r( $stmt );
+		$stmt->execute( [':building_id' => $building_id] );
+		//print_r( $stmt );
+		$rows = $stmt->fetchAll( PDO::FETCH_ASSOC ); //fetch as associative array
+
+		return $rows;
+
+	}
 
 	/*************************************************
 	*
@@ -487,71 +524,6 @@ class TFA_DB_Admin {
 	}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-	public function get_building_names( ) {
-
-		$stmt = $this->db->prepare( "SELECT buildings.id AS building_id,
-									buildings.name AS building_name
-								FROM tfa_buildings AS buildings
-								ORDER BY building_name
-								");
-		//debug
-		//print_r( $stmt );
-
-		//be sure to sanitize $tablename! use a whitelist filter, not escapes!
-		$stmt->execute();
-		$rows = $stmt->fetchAll( PDO::FETCH_ASSOC ); //fetch as associative array
-
-		//debug
-		//print_r( $rows );
-
-		if( $rows ) {
-
-			return $rows;
-
-		} else {
-
-			//something went wrong
-			echo "error";
-
-		}
-
-	}
-*/
-	public function get_building_links( $building_id ) {
-
-		$stmt = $this->db->prepare( "SELECT links.id AS id,
-											links.link_url AS url,
-											links.link_title AS title
-									FROM 	tfa_building_links AS links
-									WHERE	links.building_id = :building_id
-									ORDER BY title"
-							);
-
-
-		//print_r( $stmt );
-		$stmt->execute( [':building_id' => $building_id] );
-		//print_r( $stmt );
-		$rows = $stmt->fetchAll( PDO::FETCH_ASSOC ); //fetch as associative array
-
-		return $rows;
-
-	}
-
 	public function add_building_link( $building_id, $link_title, $link_url ) {
 		$stmt = $this->db->prepare( "INSERT INTO
 											tfa_building_links
@@ -584,10 +556,6 @@ class TFA_DB_Admin {
 
 
 
-
-
-
-
 	public function db_connect() {
 		global $wpdb;
 		//print_r($wpdb);
@@ -611,9 +579,6 @@ class TFA_DB_Admin {
 
         }
 	}
-	//ONE FUNCTION TO GET DATA
-	// TWO DIFFERENT FUNCTIONS TO PARSE THE DATA!
-	//then shortcode!
 
 
 
