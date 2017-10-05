@@ -1,0 +1,16 @@
+{
+  "transport": "ftp",
+  "uploadOnSave": true,
+  "useAtomicWrites": false,
+  "deleteLocal": false,
+  "hostname": "ftp.theforeignarchitect.com",
+  "port": "21",
+  "target": "/stg/wp-content/plugins/tfa-db",
+  "ignore": [
+    ".remote-sync.json",
+    ".git/**"
+  ],
+  "username": "admin@theforeignarchitect.com",
+  "password": "eqcck99vFTP",
+  "watch": []
+}

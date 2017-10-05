@@ -12,24 +12,7 @@ $name = "";
 $website = "";
 
 if ( isset( $_POST['action'] ) ) {
-  if ( $_POST['action'] == "edit_architects" ) {
-
-		// check if architect was added
-		if (  $_POST[ "add_architect" ] == 1 ) {
-			//add architect
-			$result = $this->add_architect_building( $_POST[ "building_id" ], $_POST[ "architect_id" ] );
-			echo '<p class="result">' . $result . '</p>';
-
-		}
-		// check if architect was added
-		if (  $_POST[ "delete_architect" ] == 1 ) {
-			//add architect
-			$result = $this->delete_architect_building( $_POST[ "ab_id" ] );
-			echo '<p class="result">' . $result . '</p>';
-
-		}
-
-
+  if ( $_POST['action'] == "edit2" ) {
 
 
 		echo "<h2>Edit building architects:</h2>";
@@ -139,6 +122,16 @@ if ( isset( $_POST['action'] ) ) {
 			   </select>
 			</td></tr>
 			<tr><td>
+			  <label for="lat">Latitude</label>:
+			</td><td>
+				<input id="lat" name="lat" type="text" placeholder="0.0000" size="6">
+			</td></tr>
+			<tr><td>
+			  <label for="lat">Longitude</label>:
+			</td><td>
+				<input id="lng" name="lng" type="text" placeholder="0.0000" size="6">
+			</td></tr>
+			<tr><td>
 			  <label for="gmaps_link">Google Maps Link</label>:
 			</td><td>
 				<input id="gmaps_link" name="gmaps_link" type="text" placeholder="" size="50">
@@ -159,23 +152,6 @@ if ( isset( $_POST['action'] ) ) {
 			    <input type="radio" name="visited" id="visited-1" value="1">
 			      Yes
 			  </label>
-			</td></tr>
-			<tr><td>
-			  <label for="date_visited">Date Visited</label>:
-			</td><td>
-				<input id="date_visited" name="date_visited" type="text" placeholder="YYYY-MM-DD" size="15">
-			</td></tr>
-			<tr><td>
-			  <label for="bucket_list">Bucket List?</label>
-			</td><td>
-				<label for="bucket_list-0">
-			    <input type="radio" name="bucket_list" id="bucket_list-0" value="0" checked="checked">
-			      No
-			    </label>
-			    <label for="bucket_list-1">
-			      <input type="radio" name="bucket_list" id="bucket_list-1" value="1">
-			      Yes
-			    </label>
 			</td></tr>
 		</table>
 		<p>
