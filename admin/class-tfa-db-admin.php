@@ -211,18 +211,18 @@ class TFA_DB_Admin {
 		$year = $data[ "year" ];
 		$gfa = $data[ "gfa" ];
 		$height = $data[ "height" ];
+		$lat = $data[ "lat" ];
+		$lng = $data[ "lng" ];
 		$gmaps_link = $data[ "gmaps_link" ];
 		$gmaps_embed = $data[ "gmaps_embed" ];
 		$city = $data[ "city" ];
 		$visited = $data[ "visited" ];
-		$date_visited = $data[ "date_visited" ];
-		$bucket_list = $data[ "bucket_list" ];
 
 		$db = $this->db_connect();
 		$stmt = $this->db->prepare( 	"INSERT INTO tfa_buildings
-																	( name, website_official, function, year, gfa, height, gmaps_embed, gmaps_link, city_id, visited, date_visited, bucket_list )
+																	( name, website_official, function, year, gfa, height, gmaps_embed, gmaps_link, city_id, visited, lat, lng )
 																	VALUES
-																	( :name, :website, :function, :year, :gfa, :height, :gmaps_embed, :gmaps_link, :city, :visited, :date_visited, :bucket_list )"
+																	( :name, :website, :function, :year, :gfa, :height, :gmaps_embed, :gmaps_link, :city, :visited, :lat, :lng )"
 																);
 
 		$retval = $stmt->execute( [ ':name' => $name,
@@ -235,8 +235,8 @@ class TFA_DB_Admin {
 																':gmaps_embed' => $gmaps_embed,
 																':city' => $city,
 																':visited' => $visited,
-																':date_visited' => $date_visited,
-																':bucket_list' => $bucket_list
+																':lat' => $lat,
+																':lng' => $lng
 															] );
 		if(! $retval )
 		{
