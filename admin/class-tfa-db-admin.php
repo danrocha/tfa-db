@@ -248,6 +248,30 @@ class TFA_DB_Admin {
 		return "Entered data successfully: ($inserted_id) - $name";
 	}
 
+
+
+	public function updateLatLng ( $data ) {
+		$building_id = $data["building_id"];
+		$lat = $data["lat"];
+		$lng = $data["lng"];
+		echo $lng;
+		echo $lat;
+
+		$db = $this->db_connect();
+		$stmt = $this->db->prepare( 	"UPDATE tfa_buildings
+																	SET lat = :lat, lng = :lng
+																	WHERE id = :bid"
+																);
+
+		$retval = $stmt->execute( [ ':bid' => $building_id, ':lat' => $lat, ':lng' => $lng ] );
+		if(! $retval )
+		{
+  			die('Could not enter data: ' . mysql_error());
+		}
+
+		return "Latitude and Longitude updated successfully";
+	}
+
 	//add ARCHITECT to building
 	public function add_architect_building ( $building_id, $architect_id ) {
 		$db = $this->db_connect();
@@ -353,7 +377,8 @@ class TFA_DB_Admin {
 		$stmt = $db->prepare( "SELECT buildings.id AS id,
 									buildings.name AS name,
 									buildings.website_official AS website,
-									buildings.gmaps_link AS gmaps_link,
+									buildings.lat as lat,
+									buildings.lng as lng,
 									cities.city AS city,
 									countries.country_code AS country_code
 								FROM tfa_buildings AS buildings,
