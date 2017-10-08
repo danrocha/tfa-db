@@ -12,75 +12,10 @@ $name = "";
 $website = "";
 
 if ( isset( $_POST['action'] ) ) {
-  if ( $_POST['action'] == "edit_architects" ) {
-
-		// check if architect was added
-		if (  $_POST[ "add_architect" ] == 1 ) {
-			//add architect
-			$result = $this->add_architect_building( $_POST[ "building_id" ], $_POST[ "architect_id" ] );
-			echo '<p class="result">' . $result . '</p>';
-
-		}
-		// check if architect was added
-		if (  $_POST[ "delete_architect" ] == 1 ) {
-			//add architect
-			$result = $this->delete_architect_building( $_POST[ "ab_id" ] );
-			echo '<p class="result">' . $result . '</p>';
-
-		}
+  if ( $_POST['action'] == "edit_latLng" ) {
+			$result = $this->updateLatLng( $_POST );
 
 
-
-
-		echo "<h2>Edit building architects:</h2>";
-		//display building name
-		echo "<p><strong>" . $_POST['building_name'] . "</strong></p>";
-		//list architects
-		$architects = $this->get_building_architects( $_POST['building_id'] );
-		$num_architects = count( $architects );
-		if ( $num_architects > 0 ) {
-			//display architects
-			echo "<p>Architects associated with this building:</p>";
-			echo "<table>";
-			foreach ( $architects as $architect ) {
-				//edit delete buttons
-				echo '<tr><td>';
-				echo '<form action="' . esc_url( $_SERVER['REQUEST_URI'] ) . '" method="post">';
-				echo '<input type="hidden" name="ab_id" value="'. $architect[ "ab_id" ] . '">';
-				echo '<input type="hidden" name="building_id" value="'. $_POST[ "building_id" ] . '">';
-				echo '<input type="hidden" name="building_name" value="'. $_POST[ "building_name" ] . '">';
-				echo '<input type="hidden" name="delete_architect" value=1>';
-				echo '<button name="action" value="edit_architects">del</button>';
-				echo '</form>';
-				echo '</td>';
-				//architect name
-				echo "<td>" . $architect[ "architect_name" ] . "</td><tr>";
-			}
-			echo "</table>";
-		} else {
-			echo "(no architects associated with this building)";
-		}
-
-		//display dropdown with architect names
-		echo "<p>Select architect to associate with this building:</p>";
-		echo '<form action=""' . esc_url( $_SERVER['REQUEST_URI'] ) . '" method="post">';
-		$selector = $this->display_architect_selector ();
-		echo $selector;
-		echo '<input type="hidden" name="building_id" value="'. $_POST['building_id'] . '">';
-		echo '<input type="hidden" name="add_architect" value=1>';
-		echo '<input type="hidden" name="building_name" value="'. $_POST[ "building_name" ] . '">';
-		echo '<button name="action" value="edit_architects">add</button>';
-		echo '</form>';
-		//cancel button
-		echo '<form action="' . esc_url( $_SERVER['REQUEST_URI'] ) . '" method="post">';
-		echo '<p><button name="action" value="cancel">cancel</button></p></form>';
-
-    // = $this->add_architect( $_POST["architect_name"], $_POST["architect_website"] );
-    //echo $result;
-    $action = "Add";
-    $id = "";
-    $name = "";
-    $website = "";
   } elseif ( $_POST['action'] == "add_new" ) {
 		//display add building form
 		?>
@@ -139,6 +74,16 @@ if ( isset( $_POST['action'] ) ) {
 			   </select>
 			</td></tr>
 			<tr><td>
+			  <label for="lat">Latitude</label>:
+			</td><td>
+				<input id="lat" name="lat" type="text" placeholder="0.0000" size="6">
+			</td></tr>
+			<tr><td>
+			  <label for="lat">Longitude</label>:
+			</td><td>
+				<input id="lng" name="lng" type="text" placeholder="0.0000" size="6">
+			</td></tr>
+			<tr><td>
 			  <label for="gmaps_link">Google Maps Link</label>:
 			</td><td>
 				<input id="gmaps_link" name="gmaps_link" type="text" placeholder="" size="50">
@@ -159,23 +104,6 @@ if ( isset( $_POST['action'] ) ) {
 			    <input type="radio" name="visited" id="visited-1" value="1">
 			      Yes
 			  </label>
-			</td></tr>
-			<tr><td>
-			  <label for="date_visited">Date Visited</label>:
-			</td><td>
-				<input id="date_visited" name="date_visited" type="text" placeholder="YYYY-MM-DD" size="15">
-			</td></tr>
-			<tr><td>
-			  <label for="bucket_list">Bucket List?</label>
-			</td><td>
-				<label for="bucket_list-0">
-			    <input type="radio" name="bucket_list" id="bucket_list-0" value="0" checked="checked">
-			      No
-			    </label>
-			    <label for="bucket_list-1">
-			      <input type="radio" name="bucket_list" id="bucket_list-1" value="1">
-			      Yes
-			    </label>
 			</td></tr>
 		</table>
 		<p>
@@ -212,6 +140,7 @@ if ( isset( $_POST['action'] ) ) {
     	<th style="text-align:left">ID</th>
     	<th style="text-align:left">Name</th>
 			<th style="text-align:left">Architect(s)</th>
+			<th style="text-align:left">Lat/Lng</th>
 			<th style="text-align:left">Location</th>
   	</tr>
 	</thead>
@@ -248,11 +177,6 @@ foreach ( $buildings as $building ){
 	}
 	echo '</td>';
 	echo '<td>';
-	//edit architects button
-	echo '<form action=""' . esc_url( $_SERVER['REQUEST_URI'] ) . '" method="post">';
-	echo '<input type="hidden" name="building_id" value="'. $building[ "id" ] . '">';
-	echo '<input type="hidden" name="building_name" value="'. $building[ "name" ] . '">';
-	echo '<button name="action" value="edit_architects">edit</button> ';
 	//list architects
 	$rows = $this->get_building_architects( $building[ "id" ] );
 	if ( $rows ) {
@@ -270,9 +194,20 @@ foreach ( $buildings as $building ){
 		echo "(no architects)";
 	}
 
-	echo '</form></td>';
+	echo '</td>';
+	//lat Longitude
+
+	echo '<td>';
+	echo '<form action=""' . esc_url( $_SERVER['REQUEST_URI'] ) . '" method="post">';
+	echo '<input type="text" size="9" name="lat" value="' . $building[ "lat" ] . '"/>';
+	echo '<input type="text" size="9" name="lng" value="' . $building[ "lng" ] . '"/>';
+	echo '<input type="hidden" name="building_id" value="'. $building[ "id" ] . '">';
+	echo '<button name="action" value="edit_latLng">update</button>';
+	echo '</form>';
+	echo '</td>';
+
 	//location
-	echo '<td>' . $building[ "city" ] . ' (' . $building[ "country_code" ] . ') <a href="' . $building[ "gmaps_link" ] . '" target="_blank">map</a></td>';
+	echo '<td>' . $building[ "city" ] . ' (' . $building[ "country_code" ] . ')</td>';
 	echo '</tr>';
 }
 ?>

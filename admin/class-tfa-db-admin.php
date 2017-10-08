@@ -211,18 +211,18 @@ class TFA_DB_Admin {
 		$year = $data[ "year" ];
 		$gfa = $data[ "gfa" ];
 		$height = $data[ "height" ];
+		$lat = $data[ "lat" ];
+		$lng = $data[ "lng" ];
 		$gmaps_link = $data[ "gmaps_link" ];
 		$gmaps_embed = $data[ "gmaps_embed" ];
 		$city = $data[ "city" ];
 		$visited = $data[ "visited" ];
-		$date_visited = $data[ "date_visited" ];
-		$bucket_list = $data[ "bucket_list" ];
 
 		$db = $this->db_connect();
 		$stmt = $this->db->prepare( 	"INSERT INTO tfa_buildings
-																	( name, website_official, function, year, gfa, height, gmaps_embed, gmaps_link, city_id, visited, date_visited, bucket_list )
+																	( name, website_official, function, year, gfa, height, gmaps_embed, gmaps_link, city_id, visited, lat, lng )
 																	VALUES
-																	( :name, :website, :function, :year, :gfa, :height, :gmaps_embed, :gmaps_link, :city, :visited, :date_visited, :bucket_list )"
+																	( :name, :website, :function, :year, :gfa, :height, :gmaps_embed, :gmaps_link, :city, :visited, :lat, :lng )"
 																);
 
 		$retval = $stmt->execute( [ ':name' => $name,
@@ -235,8 +235,8 @@ class TFA_DB_Admin {
 																':gmaps_embed' => $gmaps_embed,
 																':city' => $city,
 																':visited' => $visited,
-																':date_visited' => $date_visited,
-																':bucket_list' => $bucket_list
+																':lat' => $lat,
+																':lng' => $lng
 															] );
 		if(! $retval )
 		{
@@ -246,6 +246,30 @@ class TFA_DB_Admin {
 		//add architect
 		$this->add_architect_building ( $inserted_id, $architect_id );
 		return "Entered data successfully: ($inserted_id) - $name";
+	}
+
+
+
+	public function updateLatLng ( $data ) {
+		$building_id = $data["building_id"];
+		$lat = $data["lat"];
+		$lng = $data["lng"];
+		echo $lng;
+		echo $lat;
+
+		$db = $this->db_connect();
+		$stmt = $this->db->prepare( 	"UPDATE tfa_buildings
+																	SET lat = :lat, lng = :lng
+																	WHERE id = :bid"
+																);
+
+		$retval = $stmt->execute( [ ':bid' => $building_id, ':lat' => $lat, ':lng' => $lng ] );
+		if(! $retval )
+		{
+  			die('Could not enter data: ' . mysql_error());
+		}
+
+		return "Latitude and Longitude updated successfully";
 	}
 
 	//add ARCHITECT to building
@@ -353,7 +377,8 @@ class TFA_DB_Admin {
 		$stmt = $db->prepare( "SELECT buildings.id AS id,
 									buildings.name AS name,
 									buildings.website_official AS website,
-									buildings.gmaps_link AS gmaps_link,
+									buildings.lat as lat,
+									buildings.lng as lng,
 									cities.city AS city,
 									countries.country_code AS country_code
 								FROM tfa_buildings AS buildings,
