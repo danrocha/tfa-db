@@ -3,9 +3,24 @@
  * included in this file.
  */
 
-.building-info-box {
-	border: .5px solid #666;
-	width: 100%;
-	padding: 1em;
-    display: inline-block;
-}
+ .building-info-box {
+ 	border: .5px solid #666;
+ 	width: 100%;
+ 	padding: 1em;
+  display: block;
+  overflow: auto;
+ } 
+
+ .building-info-map {
+ 	float: left;
+ 	width: 50%;
+ 	overflow: hidden;
+ 	height: 300px;
+ }
+
+ .building-info-infobox {
+ 	float: left;
+ 	width: 50%;
+ 	overflow: hidden;
+ 	padding-left: 20px;
+ }
