@@ -14,16 +14,16 @@
 
 //print_r( $architect_data );
 //print_r( $building_data );
+
+//This file should primarily consist of HTML with a little bit of PHP.
 ?>
 
-<!-- This file should primarily consist of HTML with a little bit of PHP. -->
-
 <div class="building-info-box">
-	<div class="content-column one_half">
+	<div class="building-info-map">
 	<iframe src="https://www.google.com/maps/embed?pb=<?php echo $building_data[0]["gmaps_embed"];?>" width="300" height="300" frameborder="0" style="border:0" allowfullscreen=""></iframe>
 		<?php echo '<br class=""/><a href="' . $building_data[0][ "gmaps_link" ] . '" target="_blank" style="font-size:small">Google Maps Link</a>' ?>
 	</div>
-	<div class="content-column one_half last_column" style="padding-left:10px;">
+	<div class="building-info-infobox">
 		<p>
 			<strong><?php echo $this->output_building_name ( $building_data ); ?></strong><br class=""/>
 			<?php echo $this->output_architect_name( $architect_data ); ?>
@@ -39,6 +39,5 @@
 				}
 			?>
 		</p>
-		<div class="clear_column"></div>
 	</div>
 </div>
