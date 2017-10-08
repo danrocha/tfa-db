@@ -5,7 +5,7 @@
   "deleteLocal": false,
   "hostname": "ftp.theforeignarchitect.com",
   "port": "21",
-  "target": "/stg/wp-content/plugins/tfa-db",
+  "target": "/wp-content/plugins/tfa-db",
   "ignore": [
     ".remote-sync.json",
     ".git/**"
