@@ -76,13 +76,14 @@ if ( isset( $_POST['action'] ) ) {
 			<tr><td>
 			  <label for="lat">Latitude</label>:
 			</td><td>
-				<input id="lat" name="lat" type="text" placeholder="0.0000" size="6">
+				<input id="lat" name="lat" type="text" placeholder="0.0000" size="10">
 			</td></tr>
 			<tr><td>
 			  <label for="lat">Longitude</label>:
 			</td><td>
-				<input id="lng" name="lng" type="text" placeholder="0.0000" size="6">
+				<input id="lng" name="lng" type="text" placeholder="0.0000" size="10">
 			</td></tr>
+			<tr><td> </td><td><em><a href="https://www.latlong.net" target="_blank">latlong.net</a></em></td></tr>
 			<tr><td>
 			  <label for="gmaps_link">Google Maps Link</label>:
 			</td><td>
@@ -91,7 +92,7 @@ if ( isset( $_POST['action'] ) ) {
 			<tr><td>
 			  <label for="gmaps_embed">Google Maps Embed</label>:
 			</td><td>
-				<textarea id="gmaps_embed" name="gmaps_embed" rows="5" cols="50"></textarea>
+				<textarea id="gmaps_embed" name="gmaps_embed" rows="10" cols="50"></textarea>
 			</td></tr>
 			<tr><td>
 			  <label for="visited">Visited?</label>:
